@@ -1,5 +1,7 @@
 #include <iostream>
 #include <GL/glut.h>
+#include <string>
+#include <sstream>
 
 float rotateAngle = 0.0f;
 float scaleX = 1.0f, scaleY = 1.0f, scaleZ = 1.0f;
@@ -19,41 +21,44 @@ enum Transformation {
 
 Transformation currentTransformation = ROTATION;
 
+void renderBitmapString(float x, float y, void* font, const std::string& string) {
+    glRasterPos2f(x, y);
+    for (char c : string) {
+        glutBitmapCharacter(font, c);
+    }
+}
+
 void drawColoredCube() {
-    // Vertex coordinates for a cube
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-
-        -0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
+        -0.5f, -0.5f, -0.5f, // 0
+         0.5f, -0.5f, -0.5f, // 1
+         0.5f,  0.5f, -0.5f, // 2
+        -0.5f,  0.5f, -0.5f, // 3
+        -0.5f, -0.5f,  0.5f, // 4
+         0.5f, -0.5f,  0.5f, // 5
+         0.5f,  0.5f,  0.5f, // 6
+        -0.5f,  0.5f,  0.5f  // 7
     };
 
-    // Edge indices
     unsigned int indices[] = {
-        0, 1, 1, 2, 2, 3, 3, 0, // Back face
-        4, 5, 5, 6, 6, 7, 7, 4, // Front face
-        0, 4, 1, 5, 2, 6, 3, 7  // Connecting edges
+        0, 1, 1, 2, 2, 3, 3, 0,
+        4, 5, 5, 6, 6, 7, 7, 4,
+        0, 4, 1, 5, 2, 6, 3, 7
     };
 
-    // Colors for each edge
     float colors[] = {
-        1.0f, 0.0f, 0.0f, // Red
-        0.0f, 1.0f, 0.0f, // Green
-        0.0f, 0.0f, 1.0f, // Blue
-        1.0f, 1.0f, 0.0f, // Yellow
-        1.0f, 0.0f, 1.0f, // Magenta
-        0.0f, 1.0f, 1.0f, // Cyan
-        1.0f, 0.5f, 0.0f, // Orange
-        0.5f, 0.0f, 1.0f, // Purple
-        0.5f, 1.0f, 0.0f, // Lime
-        0.0f, 0.5f, 1.0f, // Light Blue
-        1.0f, 0.0f, 0.5f, // Pink
-        0.0f, 1.0f, 0.5f  // Sea Green
+        1.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 1.0f,
+        1.0f, 1.0f, 0.0f,
+        1.0f, 0.0f, 1.0f,
+        0.0f, 1.0f, 1.0f,
+        1.0f, 0.5f, 0.0f,
+        0.5f, 0.0f, 1.0f,
+        0.5f, 1.0f, 0.0f,
+        0.0f, 0.5f, 1.0f,
+        1.0f, 0.0f, 0.5f,
+        0.0f, 1.0f, 0.5f
     };
 
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -66,6 +71,16 @@ void drawColoredCube() {
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);
+
+    // Render vertex labels
+    glDisable(GL_DEPTH_TEST);
+    glColor3f(1.0f, 1.0f, 1.0f); // White text
+    for (int i = 0; i < 8; i++) {
+        std::stringstream ss;
+        ss << i;
+        renderBitmapString(vertices[i * 3], vertices[i * 3 + 1], GLUT_BITMAP_HELVETICA_12, ss.str());
+    }
+    glEnable(GL_DEPTH_TEST);
 }
 
 void display() {
