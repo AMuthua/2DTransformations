@@ -19,6 +19,55 @@ enum Transformation {
 
 Transformation currentTransformation = ROTATION;
 
+void drawColoredCube() {
+    // Vertex coordinates for a cube
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+
+        -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+    };
+
+    // Edge indices
+    unsigned int indices[] = {
+        0, 1, 1, 2, 2, 3, 3, 0, // Back face
+        4, 5, 5, 6, 6, 7, 7, 4, // Front face
+        0, 4, 1, 5, 2, 6, 3, 7  // Connecting edges
+    };
+
+    // Colors for each edge
+    float colors[] = {
+        1.0f, 0.0f, 0.0f, // Red
+        0.0f, 1.0f, 0.0f, // Green
+        0.0f, 0.0f, 1.0f, // Blue
+        1.0f, 1.0f, 0.0f, // Yellow
+        1.0f, 0.0f, 1.0f, // Magenta
+        0.0f, 1.0f, 1.0f, // Cyan
+        1.0f, 0.5f, 0.0f, // Orange
+        0.5f, 0.0f, 1.0f, // Purple
+        0.5f, 1.0f, 0.0f, // Lime
+        0.0f, 0.5f, 1.0f, // Light Blue
+        1.0f, 0.0f, 0.5f, // Pink
+        0.0f, 1.0f, 0.5f  // Sea Green
+    };
+
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_COLOR_ARRAY);
+
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
+    glColorPointer(3, GL_FLOAT, 0, colors);
+
+    glDrawElements(GL_LINES, 24, GL_UNSIGNED_INT, indices);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+}
+
 void display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
@@ -48,7 +97,7 @@ void display() {
         glMultMatrixf(shearMatrix);
     }
 
-    glutWireCube(1.0f);
+    drawColoredCube();
 
     glutSwapBuffers();
 }
