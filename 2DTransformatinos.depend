@@ -877,7 +877,9 @@
 
 1742531385 source:a:\mku bachelors\jan - april 2025\computer graphics\2dtransformatinos\transformation.cpp
 
-1742532361 source:a:\mku bachelors\jan - april 2025\computer graphics\2dtransformations\main.cpp
+1742939164 source:a:\mku bachelors\jan - april 2025\computer graphics\2dtransformations\main.cpp
 	<iostream>
 	<GL/glut.h>
+	<string>
+	<sstream>
 
